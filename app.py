@@ -11,7 +11,7 @@ import sys
 import time
 from datetime import datetime
 
-# Add project root to path
+# Add project root to the path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from config.config import (
