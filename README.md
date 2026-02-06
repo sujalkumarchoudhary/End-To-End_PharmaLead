@@ -5,11 +5,14 @@ An AI-powered platform for discovering Indian pharmaceutical companies that outs
 ## Features
 
 - 🔍 **Multi-Source Data Collection** - Google Search + Directory scraping via SerpAPI
-- 🤖 **AI Classification** - LangChain-powered business model classification
+- 🤖 **AI Classification** - LangChain-powered business model classification (Groq FREE / OpenAI)
 - 📊 **Outsourcing Scoring** - 1-10 likelihood score with justification
 - 📇 **Contact Extraction** - Emails, phones, LinkedIn URLs
 - 💾 **Deduplication** - Domain-based duplicate prevention
 - 📤 **CSV Export** - Ready-to-use lead list
+- 🌐 **Web Interface** - Beautiful Streamlit dashboard
+
+---
 
 ## Quick Start
 
@@ -30,31 +33,42 @@ cp .env.example .env
 Edit `.env`:
 ```
 SERPAPI_KEY=your_serpapi_key_here
-OPENAI_API_KEY=your_openai_key_here
-OR
-GROQ_API_KEY=your_groq_api_key_here
+GROQ_API_KEY=your_groq_key_here  # FREE at console.groq.com
 ```
 
-### 3. Run the Pipeline
+### 3. Run the Platform
 
+**🌐 Web Interface (Recommended):**
 ```bash
-# Full run
-python main.py
+python -m streamlit run app.py
+```
+Open http://localhost:8501 in your browser.
 
-# Test mode (limited queries)
-python main.py --test-mode
+**💻 Command Line:**
+```bash
+python main.py              # Full run
+python main.py --test-mode  # Quick test
 ```
 
-## Output
+---
 
-The pipeline generates `output/pharma_leads.csv` with columns:
+## Web Interface
+
+| Tab | Feature |
+|-----|---------|
+| 📊 Dashboard | Metrics, charts, filterable lead table |
+| 🚀 Run Pipeline | Start lead discovery with progress |
+| 📥 Export | Download CSV of all leads |
+
+---
+
+## Output CSV Format
 
 | Column | Description |
 |--------|-------------|
 | Company Name | Company name |
 | Website | Company URL |
 | LinkedIn | LinkedIn company page |
-| Size (Employees) | Employee count |
 | Location | City/State in India |
 | Business Model | manufacturing/marketing/hybrid |
 | Outsourcing Score (1-10) | Likelihood of outsourcing |
@@ -64,38 +78,36 @@ The pipeline generates `output/pharma_leads.csv` with columns:
 | Next Action | Suggested follow-up |
 | Notes | Score justification |
 
+---
+
 ## Project Structure
 
 ```
-├── config/config.py         # Settings and API keys
-├── collectors/
-│   ├── google_scraper.py    # SerpAPI Google search
-│   └── directory_scraper.py # Directory site searches
-├── analyzers/
-│   ├── classifier.py        # Business model AI classifier
-│   └── scorer.py            # Outsourcing score calculator
-├── extractors/
-│   └── contact_extractor.py # Contact info extraction
-├── database/
-│   ├── models.py            # Pydantic data models
-│   └── storage.py           # SQLite + CSV export
-├── pipeline/
-│   └── agent.py             # LangGraph workflow
-├── main.py                  # CLI entry point
-└── output/                  # Generated CSV files
+├── app.py               # 🌐 Streamlit web interface
+├── main.py              # 💻 CLI entry point
+├── config/config.py     # Settings and API keys
+├── collectors/          # SerpAPI scrapers
+├── analyzers/           # AI classifiers (Groq/OpenAI/keyword)
+├── extractors/          # Contact extraction
+├── database/            # SQLite + CSV export
+├── pipeline/            # LangGraph workflow
+└── output/              # Generated CSV files
 ```
 
-## Search Keywords
+---
 
-The platform searches for:
-- "loan license pharma India"
-- "third party manufacturing pharma"
-- "pharma marketing company India"
-- "pharma franchise manufacturer"
-- And more (see `config/config.py`)
+## LLM Options
+
+| Option | Cost | Setup |
+|--------|------|-------|
+| Groq | **FREE** | Get key at console.groq.com |
+| OpenAI | Paid | Set OPENAI_API_KEY |
+| Keyword-only | FREE | Leave keys empty |
+
+---
 
 ## Requirements
 
 - Python 3.11+
 - SerpAPI account (for search)
-- OpenAI API key (for AI classification, optional) or Groq API key (for AI classification, optional)
+- Groq API key (FREE, for AI classification)
